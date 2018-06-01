@@ -1,4 +1,4 @@
-function [usnap,t] = time_integrate(u0,bt,deltat,nt,tout)
+function [usnap,t] = time_integrate(u0,src,bt,deltat,nt,tout)
 
 nx = length(u0);
 nsnap = length(tout);
@@ -11,8 +11,9 @@ u = u0;
 
 for it = 1:nt
 %    it
+   s = src(:,it);
    rhs = bt * u;
-   up = u + rhs;
+   up = u + rhs + s;
    t = t + deltat;
    u = up;
    

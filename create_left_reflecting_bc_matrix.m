@@ -1,4 +1,4 @@
-function bmat = create_left_reflecting_bc_matrix(n,lambda,alpha,model)
+function bmat = create_left_reflecting_bc_matrix(diam,n,lambda,alpha,model)
 % Create the iteration matrix for a one-sided, positive tempered fractional 
 % diffusion equation assuming reflecting BCs.
 % n = number of gridpoints
@@ -18,11 +18,12 @@ elseif (strcmp(model,'cent'))
     cflg = 1;
 end
 
-h = 1/n;
+h = diam/n;
 lh = lambda*h;
 
 np1 = n +1;
 gwgts = create_grunwald_weights(alpha,n);
+alpham1 = alpha-1;
 
 kappa = zeros(1,n+1);
 for i = 0:n
@@ -44,15 +45,15 @@ for i = 0:n
         
         if (i == j)
             bmat(i1,j1) = gwgts(2) - exp(lh)*(1-exp(-lh))^alpha - ...
-                cflg*alpha*(lh)^(alpha-1);
+                cflg*alpha*(lh)^alpham1;
         end
         
         if (i == (j-1))
-            bmat(i1,j1) = gwgts(3)*exp(-lh) + cflg*alpha*(lh)^(alpha-1);
+            bmat(i1,j1) = gwgts(3)*exp(-lh) + cflg*alpha*(lh)^alpham1;
         end
          
     end
-    if (i <= n-1)
+    if (i < n-1)
     j = n;
     i1 = i + 1;
     j1 = j + 1;
@@ -66,7 +67,7 @@ end
 i = 0; j = 0;
 i1 = i+1; j1 = j+1;
 bmat(i1,j1) = gwgts(2) - exp(lh)*(1-exp(-lh))^alpha + gwgts(1)*exp(lh) - ...
-    cflg*alpha*(lh)^(alpha-1);
+    cflg*alpha*(lh)^alpham1;
 
 i = 1; j = 0;
 i1 = i+1; j1 = j+1;
@@ -82,13 +83,10 @@ i = n-1; j = n;
 i1 = i+1; j1 = j+1;
 k = n-i;
 k1 = k+1;
-bmat(i1,j1) = exp(lh)*(1-exp(-lh))^alpha - kappa(k1) + cflg*alpha*(lh)^(alpha-1);
+bmat(i1,j1) = exp(lh)*(1-exp(-lh))^alpha - kappa(k1) + cflg*alpha*(lh)^alpham1;
 
 i = n; j = n;
 i1 = i+1; j1 = j+1;
-k = j-i;
-k1 = k+1;
-np1 = n+1;
 bmat(i1,j1) = -gwgts(1)*exp(lh);
 
 

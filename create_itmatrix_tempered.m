@@ -1,4 +1,4 @@
-function bt = create_itmatrix_tempered(p,Cdiff,deltat,h,n,alpha,lambda,bc_type,model)
+function bt = create_itmatrix_tempered(diam,p,Cdiff,deltat,h,n,alpha,lambda,bc_type,model)
 
 % bc_type ='rr', 'ar', 'ra', 'aa'
 
@@ -10,11 +10,11 @@ betaq = q*Cdiff *h.^(-alpha) * deltat;
 
 %STEP 1: Create iteration matrix w/ reflecting BCs for a postive (left) FD
 
-bmat_left = create_left_reflecting_bc_matrix(n,lambda,alpha,model);
+bmat_left = create_left_reflecting_bc_matrix(diam,n,lambda,alpha,model);
 % bmat_left = create_int_reflecting_bc_matrix(n,lambda,alpha);
 
 %STEP 2: Use symmetry to create iteration matrix w/ reflecting BCs for a negative (right) FD
-bmat_right = flipud(fliplr(bmat_left));
+bmat_right = create_right_reflecting_bc_matrix(diam,n,lambda,alpha,model);
 
 %Step 3: Zero columns if there are absorbing BCs
 if (strcmp(bc_type(1),'a'))
