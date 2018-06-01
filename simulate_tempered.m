@@ -6,14 +6,14 @@
 clear all;
 close all;
 
-momsflg = 0;                  % turns source term for moms on (1) or off (0)
+momsflg = 1;                  % turns source term for moms on (1) or off (0)
 
 alpha = 1.5;                  %fractional order
 lambda = 1;
 
 n = 100;                      
 nx = n + 1;                   %number of grid points
-p = 0;                        %weight: p =1 is positive FD, p = 0 is negative FD, p = 1/2 is 
+p = 1;                        %weight: p =1 is positive FD, p = 0 is negative FD, p = 1/2 is 
                               %fractional Laplacian
 Cdiff = 1.0;                  %diffusion coefficient
 deltat = 1e-3;                %time step
@@ -21,7 +21,7 @@ deltat = 1e-3;                %time step
 
 model = 'norm';                 %'norm'=normalized TFD and 'cent'=centered normalized TFD
 
-xleft = 0;                      %set up spatial grid
+xleft = -1;                      %set up spatial grid
 xright = 1;
 diam = xright -xleft;
 np1 = n + 1;
@@ -87,7 +87,9 @@ u_steady = ini_mass.*u_steady;
 
 xd = x(1:8:nx);
 us = u_steady(1:8:nx);
-moms = exp(-tout(1))*u0(1:8:nx);
+if momsflg == 1
+    moms = exp(-tout(1))*u0(1:8:nx);
+end
 
 %Plot solutions
 
@@ -102,22 +104,20 @@ title(['\alpha = ',num2str(alpha),',  \lambda = ',num2str(lambda),',  ',model])
 grid on
 set(gca,'FontSize',20)
 
-%Plot solutions
 
-figure(2)
-h1 = plot(x,u0,'-',x,usnap(:,1),xd,moms,'o');
+if momsflg == 1
+    figure(2)
+    h1 = plot(x,u0,'-',x,usnap(:,1),xd,moms,'o');
 
-set(h1,'LineWidth',3)
-set(gca,'FontSize',15)
-xlabel('x')
-ylabel('u(x,t)')
-leg=legend('t = 0',['t = ',num2str(tout(1))],'MOMS');
-set(leg,'Location','best')
-title(['\alpha = ',num2str(alpha),',  \lambda = ',num2str(lambda),',  ',model],'FontSize',18)
-grid on
-set(gca,'xtick',[xleft:((xright-xleft)/10):xright])
-set(gca,'FontSize',20)
-
+    set(h1,'LineWidth',3)
+    set(gca,'FontSize',15)
+    xlabel('x')
+    ylabel('u(x,t)')
+    title(['\alpha = ',num2str(alpha),',  \lambda = ',num2str(lambda),',  ',model],'FontSize',18)
+    grid on
+    set(gca,'xtick',[xleft:((xright-xleft)/10):xright])
+    set(gca,'FontSize',20)
+end
 
 % % Plot comparisons to tempered stable distribution (only for left-sided
 % case)
