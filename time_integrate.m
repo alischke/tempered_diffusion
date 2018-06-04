@@ -13,7 +13,7 @@ for it = 1:nt
 %    it
    s = src(:,it);
    rhs = bt * u;
-   up = u + rhs + s;
+   up = u + rhs + s*deltat;
    t = t + deltat;
    u = up;
    
