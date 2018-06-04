@@ -18,7 +18,7 @@ a_lhs = eye(nx) - bt;
 for it = 1:nt
 %    it
     s = src(:,it+1);
-    rhs = u+s;
+    rhs = u+s*deltat;
     up = mldivide(a_lhs,rhs);
     t = t + deltat;
     u = up;
