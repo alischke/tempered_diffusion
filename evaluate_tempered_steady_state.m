@@ -7,38 +7,34 @@ end
 if (lambda < 0)
     error('lambda must be non-negative')
 end
-
-
-%Map domain [L,R] to unit interval [0,1]
 L = min(x);
 R = max(x);
-diam = R - L;
-x1 = (x - L)/diam;
+diam = R-L;
 alpham1 = alpha -1;
 alpham2 = alpha -2;
 
 if (lambda > 0)
 
-fac1 = mlf_star(alpha,alpham2,lambda.*x1);
-fac2 = exp(-lambda.*x1);
+fac1 = mlf_star(alpha,alpham2,lambda.*x);
+fac2 = exp(-lambda.*x);
 u_steady1 = fac1 .* fac2;
 
-fac1 = mlf_star(alpha,alpham1,lambda.*x1);
-fac2 = exp(-lambda.*x1);
+fac1 = mlf_star(alpha,alpham1,lambda.*x);
+fac2 = exp(-lambda.*x);
 u_steady2 = fac1 .* fac2;
 
 u_steady = -u_steady2 + u_steady1;
 
 %Normalization constant
-Aconst = exp(-lambda)*lambda^(alpha-2) * mlf(alpha,alpha,lambda^alpha);
+
+Aconst = (lambda^alpham2)*exp(-lambda*R)*(R^alpham1)*mlf(alpha,alpha,(lambda*R)^alpha);
 y = u_steady./Aconst;
 
 else
-    y = alpham1.*x1.^(alpha-2);
+    y = alpham1.*x.^(alpha-2);
+    y = y./diam;
 end
 
-
-y = y./diam;         %normalization constant
 
 end
 
