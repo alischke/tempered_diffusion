@@ -6,7 +6,7 @@
 clear all;
 close all;
 
-momsflg = 1;                  % turns source term for moms on (1) or off (0)
+momsflg = 0;                  % turns source term for moms on (1) or off (0)
 
 alpha = 1.5;                  %fractional order
 lambda = 1;
