@@ -4,4 +4,4 @@ Both explicit and implicit Euler methods are implemented for both normalized and
 The implementation includes functionality for left- and right-sided tempered Riemann-Liouville derivatives and a convex combination of the two.
 To run the code, set the desired parameter values in simulate_tempered.m and run.
 Note: tempered_stable.m relies on the function stblpdf.m, written by Mark Veillette and downloaded as part of the [stbl library](https://github.com/markveillette/stbl).
-Last update: May 29, 2018, Anna Lischke
+Last update: November 4, 2019 Anna Lischke
